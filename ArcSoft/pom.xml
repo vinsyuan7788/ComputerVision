@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>application.machine.learning.computer.vision</groupId>
+  <artifactId>ArcSoft</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <name>ArcSoft</name>
+  <url>http://www.example.com</url>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <encoding>UTF-8</encoding>
+  </properties>
+
+  <dependencies>
+    <!-- Test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    
+	<!-- JNA (Java Native Access) -->
+	<dependency>
+	    <groupId>net.java.dev.jna</groupId>
+	    <artifactId>jna</artifactId>
+	    <version>4.5.2</version>
+	</dependency>
+
+	<!-- Lombok -->
+	<dependency>
+	    <groupId>org.projectlombok</groupId>
+	    <artifactId>lombok</artifactId>
+	    <version>1.16.20</version>
+	</dependency>
+  </dependencies>
+  
+	<!-- Directory specification, plug-ins and packages for Maven build -->
+	<build>
+		<!-- Here specifies main and test directory of source and resources -->
+	    <sourceDirectory>src/main/java</sourceDirectory>
+	    <resources>
+	    	<resource>
+	    		<directory>src/main/resources</directory>
+	   		</resource>
+		</resources>
+	    <testSourceDirectory>src/test/java</testSourceDirectory>
+	    <testResources>
+	    	<testResource>
+	    		<directory>src/test/resources</directory>
+	   		</testResource>
+		</testResources>
+		
+		<!-- Here specifies the plugins that can be used by the children POM files (including this file) of this file -->
+		<pluginManagement>
+			<plugins>
+				<!--
+					This plugin is used to compile the sources of current project
+					== Confirmed usable version: 2.0.2, 3.6.1
+				-->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.6.1</version>
+				</plugin>
+				<!--  
+					This plugin is used to package necessary dependencies and specify main class
+					== Confirmed usable version: 2.4.1
+				-->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>  
+		            <artifactId>maven-shade-plugin</artifactId>  
+		            <version>2.4.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		
+		<!-- Here specifies the necessary plugins, which must be included by plugin management -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>  
+	            <groupId>org.apache.maven.plugins</groupId>  
+	            <artifactId>maven-shade-plugin</artifactId>  
+	            <executions>  
+	                <execution>  
+	                    <phase>package</phase>  
+	                    <goals>  
+	                        <goal>shade</goal>  
+	                    </goals>  
+	                    <configuration>  
+	                        <transformers>
+	                        	<!-- Here specifies the main class for this Maven project after packaging -->
+	                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">  
+	                                <mainClass>application.machine.learning.computer.vision.HelloArcSoft</mainClass>
+	                            </transformer>  
+	                        </transformers>  
+	                    </configuration>  
+	                </execution>  
+	            </executions>  
+	        </plugin>
+		</plugins>
+	</build>
+</project>
