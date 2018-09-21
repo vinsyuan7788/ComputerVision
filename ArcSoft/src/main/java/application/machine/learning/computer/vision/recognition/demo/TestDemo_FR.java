@@ -26,9 +26,10 @@ import application.machine.learning.computer.vision.recognition.struct.AFR_FSDK_
 import application.machine.learning.computer.vision.utils.BufferInfo;
 import application.machine.learning.computer.vision.utils.FaceInfo;
 import application.machine.learning.computer.vision.utils.ImageLoader;
+import application.machine.learning.computer.vision.utils.TimeUtils;
 
 public class TestDemo_FR {
-	
+
 	public static final String APPID     = "C4tGM4jG929umE9ndmNuSpVu1XECgiAviAVie4xmrci7";
 	public static final String FD_SDKKEY = "Dsa2AT2iLvkRjFyj4WWMPabnJ93K7bCjJnAijD6WGmbG";
 	public static final String FR_SDKKEY = "Dsa2AT2iLvkRjFyj4WWMPacGwk61damJRq4UgqujBpse";
@@ -42,6 +43,9 @@ public class TestDemo_FR {
 
     public static void main(String[] args) {
     	
+    	// Record the starting time
+    	long startTime = System.currentTimeMillis();
+    	
         // init FDEngine
     	System.out.println("Here starts to initialize FD engine...");
         Pointer pFDWorkMem = C_Library.INSTANCE.malloc(FD_WORKBUF_SIZE);
@@ -53,6 +57,7 @@ public class TestDemo_FR {
             System.exit(0);
         }
         System.out.println("FD engine initialization succeeds!");
+        long endTime1 = TimeUtils.computeTimeCost(startTime, "init FDEngine");
 
         // print FDEngine version
         System.out.println("\nHere prints the version information of FD engine...");
@@ -62,9 +67,10 @@ public class TestDemo_FR {
         System.out.println(versionFD.Version);
         System.out.println(versionFD.BuildDate);
         System.out.println(versionFD.CopyRight);
+        long endTime2 = TimeUtils.computeTimeCost(endTime1, "print FDEngine version");
 
         // init FREngine
-        System.out.println("Here starts to initialize FR engine...");
+        System.out.println("\nHere starts to initialize FR engine...");
         Pointer pFRWorkMem = C_Library.INSTANCE.malloc(FR_WORKBUF_SIZE);
         PointerByReference phFREngine = new PointerByReference();
         ret = AFR_FSDK_Library.INSTANCE.AFR_FSDK_InitialEngine(APPID, FR_SDKKEY, pFRWorkMem, FR_WORKBUF_SIZE, phFREngine);
@@ -76,6 +82,7 @@ public class TestDemo_FR {
             System.exit(0);
         }
         System.out.println("FR engine initialization succeeds!");
+        long endTime3 = TimeUtils.computeTimeCost(endTime2, "init FREngine");
 
         // print FREngine version
         System.out.println("\nHere prints the version information of FR engine...");
@@ -85,6 +92,7 @@ public class TestDemo_FR {
         System.out.println(versionFR.Version);
         System.out.println(versionFR.BuildDate);
         System.out.println(versionFR.CopyRight);
+        long endTime4 = TimeUtils.computeTimeCost(endTime3, "print FREngine version");
 
         // load Image Data
         System.out.println("\nHere loads the images...");
@@ -104,15 +112,18 @@ public class TestDemo_FR {
         } else {
             String filePathA = "003.jpg";
             String filePathB = "https://xy-face.oss-cn-shenzhen.aliyuncs.com/user/174.jpg";
+//            String filePathB = "174.jpg";
             inputImgA = loadImage(filePathA);
             inputImgB = loadImage(filePathB);
         }
         System.out.println("Image loading succeeds!");
+        long endTime5 = TimeUtils.computeTimeCost(endTime4, "load image data");
 
         // Here do the comparison through face detections and feature extraction
         System.out.println("\nHere starts to compare images...");
         System.out.println(String.format("similarity between faceA and faceB is %f" , compareFaceSimilarity(hFDEngine, hFREngine, inputImgA, inputImgB)));
         System.out.println("Image comparison succeeds!");
+        long endTime6 = TimeUtils.computeTimeCost(endTime5, "face comparison");
         
         // release Engine
         System.out.println("\nHere starts to free the engines and memories...");
@@ -121,6 +132,10 @@ public class TestDemo_FR {
         C_Library.INSTANCE.free(pFDWorkMem);
         C_Library.INSTANCE.free(pFRWorkMem);
         System.out.println("Engine and memories freeing succeeds!");
+        TimeUtils.computeTimeCost(endTime6, "release engine");
+        
+        // Total time cost
+        System.out.println("Total time cost: " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     public static FaceInfo[] doFaceDetection(Pointer hFDEngine, ASVLOFFSCREEN inputImg) {

@@ -5,6 +5,7 @@ import java.awt.image.DataBufferByte;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class ImageLoader {
 	
@@ -39,7 +40,12 @@ public class ImageLoader {
         int width = 0;
         int height = 0;
         try {
-            BufferedImage img = ImageIO.read(new File(filePath));
+            BufferedImage img = null;
+            if (filePath.startsWith("http")) {
+            	img = ImageIO.read(new URL(filePath));
+            } else {
+            	img = ImageIO.read(new File(filePath));
+            }
             width = img.getWidth();
             height = img.getHeight();
             BufferedImage bgrimg = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
