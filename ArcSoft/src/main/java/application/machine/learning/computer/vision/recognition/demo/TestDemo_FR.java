@@ -103,7 +103,7 @@ public class TestDemo_FR {
             inputImgB = loadRAWImage(filePathB, yuv_widthB, yuv_heightB, yuv_formatB);
         } else {
             String filePathA = "003.jpg";
-            String filePathB = "174.jpg";
+            String filePathB = "https://xy-face.oss-cn-shenzhen.aliyuncs.com/user/174.jpg";
             inputImgA = loadImage(filePathA);
             inputImgB = loadImage(filePathB);
         }
