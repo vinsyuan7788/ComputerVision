@@ -111,7 +111,20 @@ public class TestDemo_FR {
             inputImgB = loadRAWImage(filePathB, yuv_widthB, yuv_heightB, yuv_formatB);
         } else {
             String filePathA = "003.jpg";
-            String filePathB = "https://xy-face.oss-cn-shenzhen.aliyuncs.com/user/174.jpg";
+            /* 
+             * 	Here is the URL with Aliyun CDN acceleration to OSS
+             * 	-- In this way, remote accessing Aliyun OSS will be 2x faster
+             */
+            String filePathB = "http://face.sz-xuanyu.com/user/174.jpg";
+            /* 
+             * 	Here is the URL from Aliyun OSS
+             * 	-- In this way, can access an image stored remotely in Aliyun OSS, but with relatively slow speed
+             */
+//            String filePathB = "https://xy-face.oss-cn-shenzhen.aliyuncs.com/user/174.jpg";
+            /*
+             *  Here is the URL from local file system (under root directory of current project)
+             * 	-- In this way, all registered human-face images will be stored locally
+             */
 //            String filePathB = "174.jpg";
             inputImgA = loadImage(filePathA);
             inputImgB = loadImage(filePathB);
