@@ -50,12 +50,14 @@ public class TestDemo_FR {
     	System.out.println("Here starts to initialize FD engine...");
         Pointer pFDWorkMem = C_Library.INSTANCE.malloc(FD_WORKBUF_SIZE);
         PointerByReference phFDEngine = new PointerByReference();
+        System.out.println("FD engine before initialization: " + phFDEngine);
         NativeLong ret = AFD_FSDK_Library.INSTANCE.AFD_FSDK_InitialFaceEngine(APPID, FD_SDKKEY, pFDWorkMem, FD_WORKBUF_SIZE, phFDEngine, _AFD_FSDK_OrientPriority.AFD_FSDK_OPF_0_HIGHER_EXT, 32, MAX_FACE_NUM);
         if (ret.longValue() != 0) {
             C_Library.INSTANCE.free(pFDWorkMem);
             System.out.println(String.format("AFD_FSDK_InitialFaceEngine ret 0x%x",ret.longValue()));
             System.exit(0);
         }
+        System.out.println("FD engine after initialization: " + phFDEngine);
         System.out.println("FD engine initialization succeeds!");
         long endTime1 = TimeUtils.computeTimeCost(startTime, "init FDEngine");
 
@@ -73,6 +75,7 @@ public class TestDemo_FR {
         System.out.println("\nHere starts to initialize FR engine...");
         Pointer pFRWorkMem = C_Library.INSTANCE.malloc(FR_WORKBUF_SIZE);
         PointerByReference phFREngine = new PointerByReference();
+        System.out.println("FR engine before initialization: " + phFREngine);
         ret = AFR_FSDK_Library.INSTANCE.AFR_FSDK_InitialEngine(APPID, FR_SDKKEY, pFRWorkMem, FR_WORKBUF_SIZE, phFREngine);
         if (ret.longValue() != 0) {
             AFD_FSDK_Library.INSTANCE.AFD_FSDK_UninitialFaceEngine(hFDEngine);
@@ -81,6 +84,7 @@ public class TestDemo_FR {
             System.out.println(String.format("AFR_FSDK_InitialEngine ret 0x%x" ,ret.longValue()));
             System.exit(0);
         }
+        System.out.println("FR engine after initialization: " + phFREngine);
         System.out.println("FR engine initialization succeeds!");
         long endTime3 = TimeUtils.computeTimeCost(endTime2, "init FREngine");
 
@@ -140,8 +144,12 @@ public class TestDemo_FR {
         
         // release Engine
         System.out.println("\nHere starts to free the engines and memories...");
+        System.out.println("FD engine before uninitialization: " + hFDEngine);
         AFD_FSDK_Library.INSTANCE.AFD_FSDK_UninitialFaceEngine(hFDEngine);
+        System.out.println("FD engine after uninitialization: " + hFDEngine);
+        System.out.println("FR engine before uninitialization: " + hFREngine);
         AFR_FSDK_Library.INSTANCE.AFR_FSDK_UninitialEngine(hFREngine);
+        System.out.println("FR engine after uninitializaiton: " + hFREngine);
         C_Library.INSTANCE.free(pFDWorkMem);
         C_Library.INSTANCE.free(pFRWorkMem);
         System.out.println("Engine and memories freeing succeeds!");
