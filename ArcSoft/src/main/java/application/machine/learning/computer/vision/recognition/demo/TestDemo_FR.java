@@ -50,20 +50,21 @@ public class TestDemo_FR {
     	System.out.println("Here starts to initialize FD engine...");
         Pointer pFDWorkMem = C_Library.INSTANCE.malloc(FD_WORKBUF_SIZE);
         PointerByReference phFDEngine = new PointerByReference();
-        System.out.println("FD engine before initialization: " + phFDEngine);
+        Pointer hFDEngine = phFDEngine.getValue();
+        System.out.println("FD engine before initialization: " + phFDEngine + " whose value is " + hFDEngine);
         NativeLong ret = AFD_FSDK_Library.INSTANCE.AFD_FSDK_InitialFaceEngine(APPID, FD_SDKKEY, pFDWorkMem, FD_WORKBUF_SIZE, phFDEngine, _AFD_FSDK_OrientPriority.AFD_FSDK_OPF_0_HIGHER_EXT, 32, MAX_FACE_NUM);
         if (ret.longValue() != 0) {
             C_Library.INSTANCE.free(pFDWorkMem);
             System.out.println(String.format("AFD_FSDK_InitialFaceEngine ret 0x%x",ret.longValue()));
             System.exit(0);
         }
-        System.out.println("FD engine after initialization: " + phFDEngine);
+        hFDEngine = phFDEngine.getValue();
+        System.out.println("FD engine after initialization: " + phFDEngine + " whose value is " + hFDEngine);
         System.out.println("FD engine initialization succeeds!");
         long endTime1 = TimeUtils.computeTimeCost(startTime, "init FDEngine");
 
         // print FDEngine version
         System.out.println("\nHere prints the version information of FD engine...");
-        Pointer hFDEngine = phFDEngine.getValue();
         AFD_FSDK_Version versionFD = AFD_FSDK_Library.INSTANCE.AFD_FSDK_GetVersion(hFDEngine);
         System.out.println(String.format("%d %d %d %d", versionFD.lCodebase, versionFD.lMajor, versionFD.lMinor, versionFD.lBuild));
         System.out.println(versionFD.Version);
@@ -75,7 +76,8 @@ public class TestDemo_FR {
         System.out.println("\nHere starts to initialize FR engine...");
         Pointer pFRWorkMem = C_Library.INSTANCE.malloc(FR_WORKBUF_SIZE);
         PointerByReference phFREngine = new PointerByReference();
-        System.out.println("FR engine before initialization: " + phFREngine);
+        Pointer hFREngine = phFREngine.getValue();
+        System.out.println("FR engine before initialization: " + phFREngine + " whose value is " + hFREngine);
         ret = AFR_FSDK_Library.INSTANCE.AFR_FSDK_InitialEngine(APPID, FR_SDKKEY, pFRWorkMem, FR_WORKBUF_SIZE, phFREngine);
         if (ret.longValue() != 0) {
             AFD_FSDK_Library.INSTANCE.AFD_FSDK_UninitialFaceEngine(hFDEngine);
@@ -84,13 +86,13 @@ public class TestDemo_FR {
             System.out.println(String.format("AFR_FSDK_InitialEngine ret 0x%x" ,ret.longValue()));
             System.exit(0);
         }
-        System.out.println("FR engine after initialization: " + phFREngine);
+        hFREngine = phFREngine.getValue();
+        System.out.println("FR engine after initialization: " + phFREngine + " whose value is " + hFREngine);
         System.out.println("FR engine initialization succeeds!");
         long endTime3 = TimeUtils.computeTimeCost(endTime2, "init FREngine");
 
         // print FREngine version
         System.out.println("\nHere prints the version information of FR engine...");
-        Pointer hFREngine = phFREngine.getValue();
         AFR_FSDK_Version versionFR = AFR_FSDK_Library.INSTANCE.AFR_FSDK_GetVersion(hFREngine);
         System.out.println(String.format("%d %d %d %d", versionFR.lCodebase, versionFR.lMajor, versionFR.lMinor, versionFR.lBuild));
         System.out.println(versionFR.Version);
