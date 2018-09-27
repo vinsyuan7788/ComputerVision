@@ -158,7 +158,7 @@ public class TestDemo_FR {
         TimeUtils.computeTimeCost(endTime6, "release engine");
         
         // Total time cost
-        System.out.println("Total time cost: " + (System.currentTimeMillis() - startTime) + "ms");
+        System.out.println("\nTotal time cost: " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     public static FaceInfo[] doFaceDetection(Pointer hFDEngine, ASVLOFFSCREEN inputImg) {
