@@ -4,7 +4,7 @@ import com.sun.jna.Native;
 import com.sun.jna.Platform;
 
 public class LoadUtils {
-	
+		
     public static <T> T loadLibrary(String filePath, Class<T> interfaceClass) {
         return Native.loadLibrary(filePath,interfaceClass);
     }

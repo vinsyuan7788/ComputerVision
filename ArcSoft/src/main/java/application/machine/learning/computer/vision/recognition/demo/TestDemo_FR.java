@@ -116,7 +116,7 @@ public class TestDemo_FR {
             inputImgA = loadRAWImage(filePathA, yuv_widthA, yuv_heightA, yuv_formatA);
             inputImgB = loadRAWImage(filePathB, yuv_widthB, yuv_heightB, yuv_formatB);
         } else {
-            String filePathA = "003.jpg";
+            String filePathA = "D:\\GitRepository\\Application\\MachineLearning\\ComputerVision\\ArcSoft\\003.jpg";
             /* 
              * 	Here is the URL with Aliyun CDN acceleration to OSS
              * 	-- In this way, remote accessing Aliyun OSS will be 2x faster

@@ -54,7 +54,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>application.machine.learning.computer.vision.HelloArcSoft</mainClass>
+                  <mainClass>application.machine.learning.computer.vision.recognition.demo.TestDemo_FR</mainClass>
                 </transformer>
               </transformers>
             </configuration>

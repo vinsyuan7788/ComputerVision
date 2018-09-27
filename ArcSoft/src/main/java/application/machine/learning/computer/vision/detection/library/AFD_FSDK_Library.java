@@ -9,19 +9,23 @@ import com.sun.jna.ptr.PointerByReference;
 import application.machine.learning.computer.vision.common.struct.ASVLOFFSCREEN;
 import application.machine.learning.computer.vision.detection.struct.AFD_FSDK_Version;
 import application.machine.learning.computer.vision.utils.LoadUtils;
+import application.machine.learning.computer.vision.utils.ProjectUtils;
 
 public interface AFD_FSDK_Library extends Library {
     
-	AFD_FSDK_Library INSTANCE = (AFD_FSDK_Library) LoadUtils.loadLibrary(Platform.isWindows() ? "libarcsoft_fsdk_face_detection.dll" : "libarcsoft_fsdk_face_detection.so", AFD_FSDK_Library.class);
+	AFD_FSDK_Library INSTANCE = (AFD_FSDK_Library) LoadUtils.loadLibrary(Platform.isWindows() ?
+			ProjectUtils.DLL_PATH + "libarcsoft_fsdk_face_detection.dll" :
+			ProjectUtils.SO_PATH + "libarcsoft_fsdk_face_detection.so",
+			AFD_FSDK_Library.class);
     
     NativeLong AFD_FSDK_InitialFaceEngine(
-		String appid, 
-		String sdkid, 
-		Pointer pMem, 
-		int lMemSize, 
-		PointerByReference phEngine, 
+		String appid,
+		String sdkid,
+		Pointer pMem,
+		int lMemSize,
+		PointerByReference phEngine,
 		int iOrientPriority, 
-		int nScale, 
+		int nScale,
 		int nMaxFaceNum
 	);
 
